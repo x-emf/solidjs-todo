@@ -1,26 +1,17 @@
-import type { Component } from 'solid-js';
-
-import logo from './logo.svg';
-import styles from './App.module.css';
+import { For, type Component, createSignal } from 'solid-js';
 
 const App: Component = () => {
+  const [todos, setTodos] = createSignal(["a", "b"]);
+  setTodos(old => [...old, "c"]);
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
-    </div>
+    <> 
+      <h3>Your todos:</h3>
+      <ul>
+        <For each={todos()}>{item =>
+          <li>{item}</li>
+        }</For>
+      </ul>
+    </>
   );
 };
 
