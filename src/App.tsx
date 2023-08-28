@@ -1,11 +1,18 @@
-import { Index, type Component, createSignal } from 'solid-js';
+import { Index, type Component, createSignal, onMount } from 'solid-js';
 
 const App: Component = () => {
+  onMount(() => (JSON.parse(localStorage.getItem("todos") ?? '[]')).forEach(addTodo));
+  const updateLocalStorage =
+    (x: Task[]) => localStorage.setItem("todos", JSON.stringify(x));
   const [todos, setTodos] = createSignal<Task[]>([]);
-  const addTodo = (newTodo: Task) => setTodos(xs => [...xs, newTodo]);
+  const addTodo = (newTodo: Task) => {
+    setTodos(xs => [...xs, newTodo]);
+    updateLocalStorage(todos());
+  };
   const rmTodo = (index: number) => setTodos(xs => {
     let draft = [...xs];
     draft.splice(index, 1);
+    updateLocalStorage(draft);
     return draft;
   });
   let nextTodo: HTMLInputElement | undefined;
